@@ -1,62 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
   <defs>
-    <!-- 主渐变：深蓝 → 青蓝 -->
-    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0F172A"/>
-      <stop offset="100%" stop-color="#1E293B"/>
-    </linearGradient>
-    <!-- 图标渐变：青 → 紫 -->
-    <linearGradient id="iconGrad" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0%" stop-color="#06B6D4"/>
-      <stop offset="35%" stop-color="#3B82F6"/>
-      <stop offset="100%" stop-color="#8B5CF6"/>
-    </linearGradient>
-    <!-- 曲线渐变 -->
-    <linearGradient id="curveGrad" x1="0" y1="0.5" x2="1" y2="0.5">
-      <stop offset="0%" stop-color="#F59E0B"/>
-      <stop offset="100%" stop-color="#EF4444"/>
-    </linearGradient>
-    <!-- 发光滤镜 -->
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="4" result="blur"/>
-      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-    </filter>
+    <!-- 背景 -->
+    <radialGradient id="bg" cx="0.5" cy="0.4" r="0.6">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0B1120"/>
+    </radialGradient>
+    <!-- 三个重叠圆形各自的渐变 -->
+    <radialGradient id="cyanGlow" cx="0.3" cy="0.3" r="0.7">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#0891B2"/>
+    </radialGradient>
+    <radialGradient id="blueGlow" cx="0.3" cy="0.3" r="0.7">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </radialGradient>
+    <radialGradient id="purpleGlow" cx="0.3" cy="0.3" r="0.7">
+      <stop offset="0%" stop-color="#A78BFA"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </radialGradient>
   </defs>
 
   <!-- 圆角方形背景 -->
-  <rect x="32" y="32" width="448" height="448" rx="96" fill="url(#bgGrad)"/>
+  <rect x="24" y="24" width="464" height="464" rx="96" fill="url(#bg)"/>
 
-  <!-- 背景网格（弱化） -->
-  <g opacity="0.06" stroke="#94A3B8" stroke-width="1">
-    <line x1="100" y1="80" x2="100" y2="432"/>
-    <line x1="200" y1="80" x2="200" y2="432"/>
-    <line x1="300" y1="80" x2="300" y2="432"/>
-    <line x1="400" y1="80" x2="400" y2="432"/>
-    <line x1="80" y1="130" x2="432" y2="130"/>
-    <line x1="80" y1="210" x2="432" y2="210"/>
-    <line x1="80" y1="290" x2="432" y2="290"/>
-    <line x1="80" y1="370" x2="432" y2="370"/>
-  </g>
+  <!--
+    三个重叠圆形 → 象征：
+    - 多智能体协作（3 个圆 = 建模/编程/论文，中心重叠 = 协调器）
+    - 集合论（数学基础）
+    - Figma 式的现代多彩重叠美学
+  -->
+  <!-- 左上：青色圆 -->
+  <circle cx="200" cy="200" r="140" fill="url(#cyanGlow)" opacity="0.82"/>
 
-  <!-- M 字母：三个柱形 + 顶部连线 -->
-  <!-- 左柱 -->
-  <rect x="118" y="180" width="52" height="172" rx="12" fill="url(#iconGrad)" filter="url(#glow)"/>
-  <!-- 中柱（最高） -->
-  <rect x="230" y="120" width="52" height="232" rx="12" fill="url(#iconGrad)" filter="url(#glow)"/>
-  <!-- 右柱 -->
-  <rect x="342" y="180" width="52" height="172" rx="12" fill="url(#iconGrad)" filter="url(#glow)"/>
+  <!-- 右上：蓝色圆 -->
+  <circle cx="312" cy="200" r="140" fill="url(#blueGlow)" opacity="0.82"/>
 
-  <!-- 柱顶节点 -->
-  <circle cx="144" cy="180" r="14" fill="#06B6D4" filter="url(#glow)"/>
-  <circle cx="256" cy="120" r="14" fill="#3B82F6" filter="url(#glow)"/>
-  <circle cx="368" cy="180" r="14" fill="#8B5CF6" filter="url(#glow)"/>
+  <!-- 下方中间：紫色圆 -->
+  <circle cx="256" cy="300" r="140" fill="url(#purpleGlow)" opacity="0.82"/>
 
-  <!-- 拟合曲线（数学模型） -->
-  <path d="M80 310 Q144 170 200 260 Q256 350 312 220 Q368 90 432 170"
-        stroke="url(#curveGrad)" stroke-width="6" fill="none"
-        stroke-linecap="round" stroke-dasharray="16 8" opacity="0.9" filter="url(#glow)"/>
-
-  <!-- 曲线上的小节点 -->
-  <circle cx="200" cy="260" r="6" fill="#F59E0B"/>
-  <circle cx="312" cy="220" r="6" fill="#F59E0B"/>
+  <!-- 中心核心亮点（协调器） -->
+  <circle cx="256" cy="240" r="24" fill="white" opacity="0.9"/>
 </svg>
