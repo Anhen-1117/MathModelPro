@@ -1,0 +1,121 @@
+[
+  {
+    "id": "model_linear_programming",
+    "title": "线性规划 (Linear Programming)",
+    "content": "线性规划是研究线性约束条件下线性目标函数极值问题的数学理论和方法。\n适用场景：资源分配、生产计划、运输问题等。\n典型解法：单纯形法 (Simplex Method)、内点法 (Interior Point Method)。\nPython 实现：scipy.optimize.linprog, pulp。\n关键步骤：1) 确定决策变量 2) 建立目标函数 3) 列出约束条件 4) 求解并分析。",
+    "category": "modeling",
+    "tags": [
+      "optimization",
+      "linear",
+      "资源分配",
+      "生产计划"
+    ]
+  },
+  {
+    "id": "model_nonlinear_programming",
+    "title": "非线性规划 (Nonlinear Programming)",
+    "content": "非线性规划处理目标函数或约束条件中至少有一个是非线性函数的优化问题。\n适用场景：工程设计优化、投资组合优化、参数估计等。\n解法：梯度下降法、牛顿法、SLSQP、遗传算法、粒子群算法。\nPython 实现：scipy.optimize.minimize, scipy.optimize.differential_evolution。\n注意事项：可能存在多个局部最优解，需要全局搜索方法。",
+    "category": "modeling",
+    "tags": [
+      "optimization",
+      "nonlinear",
+      "工程优化",
+      "参数估计"
+    ]
+  },
+  {
+    "id": "model_ahp",
+    "title": "层次分析法 (AHP)",
+    "content": "AHP 将决策问题分解为目标、准则、方案等层次，通过两两比较确定各因素权重。\n适用场景：多准则决策、方案评估、供应商选择、风险评估等。\n步骤：1) 建立层次结构模型 2) 构造判断矩阵 3) 层次单排序及一致性检验 4) 层次总排序。\n注意：判断矩阵需要一致性检验，CR < 0.1 可接受。\nPython：numpy 实现，或使用 pyDecision 库。",
+    "category": "modeling",
+    "tags": [
+      "评价",
+      "决策",
+      "多准则",
+      "权重"
+    ]
+  },
+  {
+    "id": "model_topsis",
+    "title": "TOPSIS 优劣解距离法",
+    "content": "TOPSIS 通过计算各方案与正理想解和负理想解的距离来排序方案优劣。\n适用场景：多指标综合评价，如经济效益评价、环境质量评价、竞争力评价等。\n步骤：1) 数据标准化 2) 确定正负理想解 3) 计算距离 4) 计算相对贴近度 5) 排序。\n优点：对数据分布无要求，计算简单直观。\n注意：指标需要同趋势化处理（正向化/负向化）。",
+    "category": "modeling",
+    "tags": [
+      "评价",
+      "排序",
+      "多指标",
+      "综合评价"
+    ]
+  },
+  {
+    "id": "model_arima",
+    "title": "ARIMA 时间序列预测",
+    "content": "ARIMA (AutoRegressive Integrated Moving Average) 是经典的时间序列预测方法。\n适用场景：经济预测、销量预测、人口预测等趋势性数据。\n模型参数：(p, d, q) — 自回归阶数、差分阶数、移动平均阶数。\n步骤：1) 平稳性检验 (ADF) 2) 差分处理 3) 模型定阶 (AIC/BIC) 4) 残差检验。\nPython：statsmodels.tsa.arima.model.ARIMA, pmdarima.auto_arima。\n扩展：SARIMA (季节性), ARIMAX (外生变量)。",
+    "category": "modeling",
+    "tags": [
+      "预测",
+      "时间序列",
+      "经济",
+      "统计"
+    ]
+  },
+  {
+    "id": "model_ga",
+    "title": "遗传算法 (Genetic Algorithm)",
+    "content": "遗传算法模拟自然选择和遗传机制进行全局优化搜索。\n适用场景：复杂非线性优化、路径规划、调度问题、参数优化等。\n步骤：1) 编码 2) 初始化种群 3) 适应度评估 4) 选择 5) 交叉 6) 变异 7) 迭代。\n参数：种群大小、交叉概率、变异概率、迭代次数。\nPython：geneticalgorithm, DEAP, scipy.optimize.differential_evolution。\n优点：全局搜索能力强，不要求目标函数可微。缺点：计算量大，收敛速度慢。",
+    "category": "modeling",
+    "tags": [
+      "优化",
+      "进化算法",
+      "全局搜索",
+      "启发式"
+    ]
+  },
+  {
+    "id": "code_template_py_optimization",
+    "title": "Python 优化问题代码模板",
+    "content": "Python 优化求解标准模板：\n```python\nimport numpy as np\nfrom scipy.optimize import minimize, linprog\nimport matplotlib.pyplot as plt\n\n# 1. 定义目标函数\ndef objective(x):\n    return x[0]**2 + x[1]**2\n\n# 2. 定义约束条件\nconstraints = [\n    {'type': 'ineq', 'fun': lambda x: x[0] + x[1] - 1},\n    {'type': 'ineq', 'fun': lambda x: x[0]},\n]\n\n# 3. 求解\nx0 = [0.5, 0.5]\nresult = minimize(objective, x0, constraints=constraints, method='SLSQP')\nprint(f\"最优解: {result.x}\")\nprint(f\"最优值: {result.fun}\")\n\n# 4. 可视化\nfig, ax = plt.subplots(figsize=(8, 6))\n# ... 绘图代码 ...\nplt.savefig('result.png', dpi=150)\n```",
+    "category": "code",
+    "tags": [
+      "python",
+      "optimization",
+      "模板",
+      "scipy"
+    ]
+  },
+  {
+    "id": "code_template_py_prediction",
+    "title": "Python 预测问题代码模板",
+    "content": "Python 预测建模标准模板：\n```python\nimport pandas as pd\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import mean_squared_error, r2_score\nimport matplotlib.pyplot as plt\n\n# 1. 数据加载\ndf = pd.read_csv('data.csv')\nX = df.drop('target', axis=1)\ny = df['target']\n\n# 2. 划分数据集\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)\n\n# 3. 模型训练\nfrom sklearn.ensemble import RandomForestRegressor\nmodel = RandomForestRegressor(n_estimators=100)\nmodel.fit(X_train, y_train)\n\n# 4. 评估\ny_pred = model.predict(X_test)\nprint(f\"R²: {r2_score(y_test, y_pred):.4f}\")\nprint(f\"RMSE: {np.sqrt(mean_squared_error(y_test, y_pred)):.4f}\")\n\n# 5. 可视化\nplt.scatter(y_test, y_pred, alpha=0.5)\nplt.plot([y.min(), y.max()], [y.min(), y.max()], 'r--')\nplt.xlabel('真实值'); plt.ylabel('预测值')\nplt.savefig('prediction_result.png', dpi=150)\n```",
+    "category": "code",
+    "tags": [
+      "python",
+      "prediction",
+      "模板",
+      "sklearn"
+    ]
+  },
+  {
+    "id": "paper_structure",
+    "title": "数学建模论文标准结构",
+    "content": "标准数学建模论文结构：\n1. **摘要** (Abstract)：问题背景、方法概述、主要结果、关键词。300-500字。\n2. **问题重述** (Problem Restatement)：用自己的话重述问题，明确目标和约束。\n3. **模型假设** (Assumptions)：列出建模过程中的关键假设和简化。\n4. **符号说明** (Notation)：表格列出所有符号及其含义。\n5. **模型建立** (Model)：核心部分，详细描述数学模型、公式推导。\n6. **模型求解** (Solution)：算法描述、求解过程、结果呈现。\n7. **结果分析** (Analysis)：对结果的解释、敏感性分析、模型检验。\n8. **模型评价** (Evaluation)：优点、缺点、改进方向。\n9. **参考文献** (References)：格式规范，引用近年文献。\n10. **附录** (Appendix)：代码清单、详细数据等。",
+    "category": "paper",
+    "tags": [
+      "论文",
+      "结构",
+      "写作规范"
+    ]
+  },
+  {
+    "id": "paper_common_mistakes",
+    "title": "数学建模论文常见错误",
+    "content": "数学建模论文常见错误：\n1. **摘要过于简略**：需包含方法、主要数据和结论。\n2. **没有明确假设**：缺少合理性和必要性的讨论。\n3. **符号混乱**：同一符号在不同部分含义不同。\n4. **模型没有求解过程**：只给出模型不给出解法。\n5. **缺少敏感性分析**：没有分析参数变化对结果的影响。\n6. **图表无标题和编号**：图表需有 Fig.1 或 表1 等编号和说明。\n7. **引用不规范**：引用文献格式不统一，缺少页码或 DOI。\n8. **代码未附在附录**：关键代码需要在附录中给出。\n9. **结论与摘要不一致**：结论中的数据需与摘要呼应。\n10. **没有讨论模型局限性**：所有模型都有局限，需要指出。",
+    "category": "paper",
+    "tags": [
+      "论文",
+      "错误",
+      "检查",
+      "writing"
+    ]
+  }
+]

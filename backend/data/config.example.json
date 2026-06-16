@@ -1,0 +1,51 @@
+{
+  "api": {
+    "coordinator": {
+      "apiKey": "sk-your-api-key-here",
+      "baseUrl": "https://api.deepseek.com",
+      "modelId": "deepseek-v4-pro",
+      "apiType": "openai"
+    },
+    "modeler": {
+      "apiKey": "sk-your-api-key-here",
+      "baseUrl": "https://api.deepseek.com",
+      "modelId": "deepseek-v4-pro",
+      "apiType": "openai"
+    },
+    "coder": {
+      "apiKey": "sk-your-api-key-here",
+      "baseUrl": "https://api.deepseek.com",
+      "modelId": "deepseek-v4-pro",
+      "apiType": "openai"
+    },
+    "writer": {
+      "apiKey": "sk-your-api-key-here",
+      "baseUrl": "https://api.deepseek.com",
+      "modelId": "deepseek-v4-pro",
+      "apiType": "openai"
+    }
+  },
+  "model": {
+    "defaultLanguage": "python",
+    "defaultTemplate": "cumcm"
+  },
+  "chart_pipeline_enabled": true,
+  "chart_pipeline": [
+    {
+      "skill_id": "chart-line",
+      "params": {}
+    },
+    {
+      "skill_id": "chart-bar",
+      "params": {}
+    },
+    {
+      "skill_id": "chart-scatter",
+      "params": {}
+    },
+    {
+      "skill_id": "chart-heatmap",
+      "params": {}
+    }
+  ]
+}

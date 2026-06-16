@@ -1,0 +1,38 @@
+# Web 框架
+fastapi>=0.115.0
+uvicorn[standard]>=0.34.0
+
+# HTTP 客户端
+httpx>=0.28.0
+
+# 数据库
+sqlalchemy>=2.0.0
+
+# Redis
+redis>=5.0.0
+
+# LLM 集成
+litellm>=1.0.0
+
+# 数据处理
+pandas>=2.2.0
+numpy>=2.2.0
+
+# 可视化
+matplotlib>=3.10.0
+
+# 代码执行
+jupyter_client>=8.0.0
+nbformat>=5.0.0
+
+# 工具
+python-dotenv>=1.0.0
+pydantic>=2.10.0
+pydantic-settings>=2.8.0
+
+# 日志
+loguru>=0.7.0
+
+# 文档解析
+pdfplumber>=0.11.0
+python-docx>=1.1.0
