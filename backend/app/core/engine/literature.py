@@ -67,12 +67,17 @@ class Paper:
 
 
 class LiteratureSearch:
-    """文献搜索 — OpenAlex + 独立文献表"""
+    """文献搜索 — 多数据源（OpenAlex / CNKI）+ 独立文献表"""
+
+    # 支持的文献数据源
+    SOURCE_OPENALEX = "openalex"
+    SOURCE_CNKI = "cnki"
 
     def __init__(self, email: Optional[str] = None):
         self.email = email
         self.base_url = "https://api.openalex.org"
         self._db_session = None  # 延迟注入
+        self._cnki = None  # 知网搜索引擎（延迟初始化）
 
     def set_db_session(self, session):
         """注入数据库会话"""
@@ -81,9 +86,45 @@ class LiteratureSearch:
     async def search(
         self,
         query: str,
-        limit: int = 10
+        limit: int = 10,
+        source: str = SOURCE_OPENALEX,
     ) -> List[Paper]:
-        """搜索文献（OpenAlex API）"""
+        """搜索文献（支持多数据源）。
+
+        Args:
+            query: 搜索关键词。
+            limit: 最大返回条数。
+            source: 数据源（"openalex" 或 "cnki"）。
+
+        Returns:
+            Paper 列表。
+        """
+        if source == self.SOURCE_CNKI:
+            return await self._search_cnki(query, limit)
+        return await self._search_openalex(query, limit)
+
+    async def _search_cnki(self, query: str, limit: int = 10) -> List[Paper]:
+        """通过知网搜索文献（含百度学术兜底）。"""
+        if self._cnki is None:
+            from app.core.engine.cnki_search import CnkiSearch
+            import os
+            # 调试模式：保存 HTML 到 data/debug/ 目录
+            debug_dir = os.path.join(
+                os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+                "data", "debug"
+            )
+            self._cnki = CnkiSearch(debug_dir=debug_dir)
+        try:
+            papers = await self._cnki.search(query, limit)
+            if papers:
+                logger.info(f"知网/百度学术搜索完成: {len(papers)} 篇")
+            return papers
+        except Exception as e:
+            logger.warning(f"知网搜索失败: {e}")
+            return []
+
+    async def _search_openalex(self, query: str, limit: int = 10) -> List[Paper]:
+        """通过 OpenAlex API 搜索文献。"""
         params = {
             "search": query,
             "per_page": limit,
@@ -134,7 +175,7 @@ class LiteratureSearch:
                 return papers
 
         except Exception as e:
-            logger.warning(f"Literature search failed: {e}")
+            logger.warning(f"OpenAlex 搜索失败: {e}")
             return []
 
     async def search_and_save(
@@ -142,9 +183,14 @@ class LiteratureSearch:
         query: str,
         task_id: str = None,
         limit: int = 10,
+        source: str = SOURCE_CNKI,
     ) -> List[Paper]:
-        """搜索文献并保存到独立文献表（DOI 去重）"""
-        papers = await self.search(query, limit)
+        """搜索文献并保存到独立文献表（DOI 去重）
+
+        Args:
+            source: 数据源，默认 "cnki"（中国网络环境 CNKI 可用）。
+        """
+        papers = await self.search(query, limit, source=source)
 
         if self._db_session:
             await self._save_to_db(papers, query, task_id)
@@ -210,10 +256,17 @@ class LiteratureSearch:
         topic: str,
         task_id: str = None,
         limit: int = 5,
+        source: str = None,
     ) -> List[Paper]:
-        """搜索数学建模相关文献（保存到独立表）"""
+        """搜索数学建模相关文献（保存到独立表）
+
+        Args:
+            source: 数据源，默认 None（自动选 CNKI，中国网络环境可用）。
+        """
+        if source is None:
+            source = self.SOURCE_CNKI
         query = f"mathematical modeling {topic}"
-        return await self.search_and_save(query, task_id, limit)
+        return await self.search_and_save(query, task_id, limit, source=source)
 
     async def get_history(
         self,

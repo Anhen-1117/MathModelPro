@@ -374,12 +374,30 @@ class WorkflowEngine:
         return chart_configs
 
     async def _search_literature(self, topic: str, limit: int = 5) -> List[Paper]:
-        """搜索相关文献"""
+        """搜索相关文献（CNKI 优先，OpenAlex 回退）"""
+        papers = []
+        # 优先使用知网（中国网络环境可用）
         try:
-            return await self.literature.search_math_modeling(topic, limit)
+            papers = await self.literature.search_math_modeling(
+                topic, limit, source="cnki"
+            )
+            if papers:
+                logger.info(f"知网检索到 {len(papers)} 篇文献")
+                return papers
         except Exception as e:
-            logger.warning(f"Literature search failed: {e}")
-            return []
+            logger.warning(f"知网搜索失败: {e}")
+
+        # 回退：OpenAlex
+        try:
+            papers = await self.literature.search_math_modeling(
+                topic, limit, source="openalex"
+            )
+            if papers:
+                logger.info(f"OpenAlex 检索到 {len(papers)} 篇文献")
+        except Exception as e:
+            logger.warning(f"OpenAlex 搜索失败: {e}")
+
+        return papers
 
     def _format_references(self, papers: List[Paper]) -> str:
         """格式化参考文献（GB/T 7714 风格）"""

@@ -476,10 +476,15 @@ async def literature_search(
     limit: int = 10,
     task_id: str = None,
     save: bool = True,
+    source: str = "cnki",
 ):
-    """搜索文献并可选保存到独立文献表"""
+    """搜索文献并可选保存到独立文献表
+
+    Args:
+        source: 数据源（"cnki" 或 "openalex"），默认 "cnki"（中国可用）。
+    """
     searcher = LiteratureSearch()
-    papers = await searcher.search(q, limit)
+    papers = await searcher.search(q, limit, source=source)
 
     if save and papers:
         db = SessionLocal()

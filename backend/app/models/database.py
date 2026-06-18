@@ -120,8 +120,11 @@ def _add_column_if_not_exists(engine, table, column, col_def):
             if column not in col_names:
                 conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {column} {col_def}"))
                 conn.commit()
-    except Exception:
-        pass
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning(
+            f"迁移 {table}.{column} 失败（表可能已存在该列）: {e}"
+        )
 
 
 def get_db():

@@ -21,7 +21,7 @@ async def startup():
     """应用启动"""
     print("MathModelPro starting...")
 
-    # 数据库迁移（Alembic）
+    # 数据库迁移（Alembic + init_db 兜底）
     try:
         from alembic.config import Config
         from alembic import command
@@ -30,11 +30,12 @@ async def startup():
         print("Database migrated (Alembic)")
     except Exception as e:
         print(f"[WARN] Database migration failed: {e}")
-        try:
-            init_db()
-            print("Database initialized (fallback)")
-        except Exception as e2:
-            print(f"[WARN] Database init fallback failed: {e2}")
+    # 始终执行 init_db：创建 Alembic 未覆盖的新表，添加缺失列（幂等安全）
+    try:
+        init_db()
+        print("Database schema checked (init_db)")
+    except Exception as e2:
+        print(f"[WARN] Database init check failed: {e2}")
 
     # 连接 Redis（失败降级到内存模式）
     try:

@@ -55,3 +55,13 @@ dump.rdb
 backend/project/
 backend/figures/
 论文集/
+
+# ChromaDB 向量数据库
+backend/data/chromadb/
+
+# 调试数据
+backend/app/data/debug/
+
+# GitHub CLI 便携版
+gh_portable/
+gh.zip
